@@ -1,0 +1,99 @@
+<title>Richard audio &mdash; Auphonic A/B</title>
+<style>
+  :root{--bg:#faf9f7;--fg:#1a1a1a;--mut:#6b6b6b;--line:#e2e0dc;--card:#fff;
+        --raw:#b45309;--clean:#15803d;--accent:#1d4ed8}
+  @media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+        --bg:#14151a;--fg:#eceaf0;--mut:#9b9aa3;--line:#2b2d36;--card:#1c1e25;
+        --raw:#f59e0b;--clean:#4ade80;--accent:#93b4ff}}
+  :root[data-theme=dark]{--bg:#14151a;--fg:#eceaf0;--mut:#9b9aa3;--line:#2b2d36;
+        --card:#1c1e25;--raw:#f59e0b;--clean:#4ade80;--accent:#93b4ff}
+  body{background:var(--bg);color:var(--fg);margin:0;
+       font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  .wrap{max-width:900px;margin:0 auto;padding:40px 22px 72px}
+  h1{font-size:27px;margin:0 0 6px;letter-spacing:-.02em}
+  .sub{color:var(--mut);margin:0 0 30px;font-size:15px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+        padding:22px 24px;margin:0 0 22px}
+  .card h2{font-size:19px;margin:0 0 4px}
+  .meta{color:var(--mut);font-size:13.5px;margin:0 0 10px}
+  .why{margin:0 0 16px;font-size:15px}
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:680px){.pair{grid-template-columns:1fr}}
+  .side h3{font-size:15px;margin:0 0 9px;display:flex;align-items:center;gap:8px}
+  .tag{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+       padding:2px 7px;border-radius:99px;border:1px solid currentColor}
+  .tag.raw{color:var(--raw)} .tag.clean{color:var(--clean)}
+  audio{width:100%;margin-bottom:10px}
+  dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:2px 12px;font-size:13.5px}
+  dt{color:var(--mut)} dd{margin:0;font-variant-numeric:tabular-nums}
+  .delta{margin:16px 0 0;padding-top:13px;border-top:1px solid var(--line);
+         font-size:14px;color:var(--mut)}
+  .delta strong{color:var(--accent)}
+  footer{color:var(--mut);font-size:13px;margin-top:34px;line-height:1.7}
+  code{background:rgba(127,127,127,.14);padding:1px 5px;border-radius:4px;font-size:.9em}
+</style>
+<div class="wrap">
+<h1>Richard audio — before / after Auphonic</h1>
+<p class="sub">Source: <code>richard-liron-riverside-audio-hipfilter.wav</code> (Descript,
+DD CAIS - Richard). Speech Isolation only — the voice is preserved, not resynthesised.</p>
+
+  <section class="card">
+    <h2>Section 1 — where the noise is</h2>
+    <p class="meta">source position <code>77:30</code> &middot; 30 s each side &middot; level-matched</p>
+    <p class="why">The noisiest speech stretch the scan found. Before, the gaps between words sit at &minus;55.9&nbsp;dB &mdash; audible hiss and room tone under the voice. After, they fall to &minus;101&nbsp;dB while the speech level barely moves (&minus;13.3 &rarr; &minus;13.0&nbsp;dB).</p>
+    <div class="pair">
+      <div class="side">
+        <h3>Before <span class="tag raw">original</span></h3>
+        <audio controls preload="none" src="noisy_before.mp3"></audio>
+        <dl><dt>noise floor between words</dt><dd>-55.9 dB</dd>
+            <dt>speech level</dt><dd>-13.3 dB</dd></dl>
+      </div>
+      <div class="side">
+        <h3>After <span class="tag clean">Auphonic</span></h3>
+        <audio controls preload="none" src="noisy_after.mp3"></audio>
+        <dl><dt>noise floor between words</dt><dd>-101.0 dB</dd>
+            <dt>speech level</dt><dd>-13.0 dB</dd></dl>
+      </div>
+    </div>
+    <p class="delta">Noise floor dropped <strong>45.1 dB</strong> between words.</p>
+  </section>
+
+  <section class="card">
+    <h2>Section 2 — where it was already clean</h2>
+    <p class="meta">source position <code>41:15</code> &middot; 30 s each side &middot; level-matched</p>
+    <p class="why">A control section that was already fairly clean (&minus;65.6&nbsp;dB floor, about 10&nbsp;dB quieter between words than section 1). Included so you can check the processing does not damage good audio: the floor still drops, and the voice is unchanged.</p>
+    <div class="pair">
+      <div class="side">
+        <h3>Before <span class="tag raw">original</span></h3>
+        <audio controls preload="none" src="clean_before.mp3"></audio>
+        <dl><dt>noise floor between words</dt><dd>-65.6 dB</dd>
+            <dt>speech level</dt><dd>-14.1 dB</dd></dl>
+      </div>
+      <div class="side">
+        <h3>After <span class="tag clean">Auphonic</span></h3>
+        <audio controls preload="none" src="clean_after.mp3"></audio>
+        <dl><dt>noise floor between words</dt><dd>-101.4 dB</dd>
+            <dt>speech level</dt><dd>-13.2 dB</dd></dl>
+      </div>
+    </div>
+    <p class="delta">Noise floor dropped <strong>35.8 dB</strong> between words.</p>
+  </section>
+<footer>
+<strong>What was applied:</strong> Auphonic Speech Isolation
+(<code>denoisemethod=speech_isolation</code>, amount 100), adaptive leveler,
+loudness normalised to −16 LUFS with −1.5 dBTP ceiling, 48 kHz WAV.
+Nothing else was changed — no EQ, no gate, no generative resynthesis.<br>
+<strong>How the sections were chosen:</strong> the full 2-hour recording was scanned in
+30-second windows measuring the noise floor between words (10th percentile of
+100 ms RMS). The noisy section is the worst-scoring speech-bearing window; the
+clean section is among the best. Neither was picked by ear.<br>
+<strong>Level-matched, deliberately:</strong> Auphonic normalises its output to
+&minus;16&nbsp;LUFS, which made the processed clips ~20&nbsp;dB louder than the raw ones.
+Louder always wins a listening test, so the BEFORE clips here have pure linear gain
+applied (+19.2&nbsp;dB and +21.8&nbsp;dB) to sit at the same loudness. Gain lifts signal and
+noise together, so what you hear is the denoising, not a volume trick.<br>
+<strong>Reading the numbers:</strong> "noise floor" is what you hear in the gaps
+between words — lower is cleaner. "Speech level" should stay roughly the same:
+if it moved a lot, the voice itself was altered.
+</footer>
+</div>
