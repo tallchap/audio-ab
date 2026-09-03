@@ -17,193 +17,46 @@ audio{width:230px;height:32px} .w{font-size:13px;margin-top:4px;color:var(--mut)
 pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre-wrap;font-size:12.5px;min-height:40px}
 </style>
 <div class="wrap">
-<h1>Richard / Liron overlap review — the uncertain 36</h1>
-<p class="sub">Every segment where Richard's track has audio while Liron is talking was scored for "artifact vs. Richard actually talking" from five signals:
-level vs. Richard's speech, duration, waveform cross-correlation with Liron's track (bleed <em>is</em> Liron's waveform, 150–450 ms late),
-ElevenLabs Scribe words vs. the words Liron said just before (echo = same words; "yeah / right / hmm" = backchannel), and distance to Richard's own sentences.
-Left player: Richard's track with 1 s of context each side. Right: Liron's track over the same seconds. Mark each, then copy the decisions and paste them back to me.</p>
+<h1>Richard overlap review — the uncertain 36</h1>
+<p class="sub">Every segment where Richard's track has audio while Liron is talking was scored for "artifact vs. Richard actually talking" (level vs. speech, duration, waveform cross-correlation with Liron's track, ElevenLabs words vs. what Liron said just before, distance to Richard's own sentences). These are the ones the scorer is not sure about. Each player is Richard's track alone, 1 s of context each side. <strong>Mark as many as you like</strong> — the decisions get distilled into rules that re-tier the rest and apply to future tracks. Then Copy decisions and paste them back.</p>
 <div class="stats"><div class="stat"><b>1346</b>overlap segments scored</div><div class="stat"><b>1144 · 456 s</b>auto-remove (p ≥ 0.85)</div><div class="stat"><b>166 · 194 s</b>auto-keep (p ≤ 0.25)</div><div class="stat"><b>36 · 20 s</b>for your review</div></div>
-<div class="tw"><table><thead><tr><th>Where</th><th>Richard's track</th><th>Liron, same seconds</th><th>Evidence</th><th>Decision</th></tr></thead><tbody>
-<tr id="rv00"><td class="t">7:04.04–7:04.36<br><span class="m">0.32 s · -7 dBFS (+5 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv00_richard.mp3"></audio><div class="w">okay</div></td>
-<td><audio controls preload="none" src="clips/rv00_liron.mp3"></audio><div class="w">cool</div></td>
-<td class="ev">p=0.38<br>waveform=Liron ncc 0.28; far from own speech; backchannel: okay</td>
-<td class="dec"><label><input type="radio" name="rv00" value="remove"> remove</label><label><input type="radio" name="rv00" value="keep"> keep</label></td></tr>
-<tr id="rv01"><td class="t">10:29.14–10:29.39<br><span class="m">0.25 s · -21 dBFS (-8 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv01_richard.mp3"></audio><div class="w">—</div></td>
-<td><audio controls preload="none" src="clips/rv01_liron.mp3"></audio><div class="w">and yeah great talk</div></td>
-<td class="ev">p=0.82<br>no words; -8 dB under speech</td>
-<td class="dec"><label><input type="radio" name="rv01" value="remove"> remove</label><label><input type="radio" name="rv01" value="keep"> keep</label></td></tr>
-<tr id="rv02"><td class="t">12:49.79–12:50.08<br><span class="m">0.29 s · -11 dBFS (+1 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv02_richard.mp3"></audio><div class="w">—</div></td>
-<td><audio controls preload="none" src="clips/rv02_liron.mp3"></audio><div class="w">i&#x27;ll check the volume</div></td>
-<td class="ev">p=0.38<br>loud but no words (laugh / non-verbal?); far from own speech</td>
-<td class="dec"><label><input type="radio" name="rv02" value="remove"> remove</label><label><input type="radio" name="rv02" value="keep"> keep</label></td></tr>
-<tr id="rv03"><td class="t">12:53.97–12:54.29<br><span class="m">0.32 s · -31 dBFS (-19 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv03_richard.mp3"></audio><div class="w">sure</div></td>
-<td><audio controls preload="none" src="clips/rv03_liron.mp3"></audio><div class="w">—</div></td>
-<td class="ev">p=0.73<br>ncc 0.12; -19 dB under speech; far from own speech; backchannel: sure</td>
-<td class="dec"><label><input type="radio" name="rv03" value="remove"> remove</label><label><input type="radio" name="rv03" value="keep"> keep</label></td></tr>
-<tr id="rv04"><td class="t">13:16.09–13:17.70<br><span class="m">1.61 s · -8 dBFS (+4 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv04_richard.mp3"></audio><div class="w">backup audio yes</div></td>
-<td><audio controls preload="none" src="clips/rv04_liron.mp3"></audio><div class="w">got backup audio</div></td>
-<td class="ev">p=0.82<br>echoes Liron: backup audio yes; far from own speech</td>
-<td class="dec"><label><input type="radio" name="rv04" value="remove"> remove</label><label><input type="radio" name="rv04" value="keep"> keep</label></td></tr>
-<tr id="rv05"><td class="t">13:29.93–13:30.34<br><span class="m">0.41 s · -10 dBFS (+2 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv05_richard.mp3"></audio><div class="w">all right</div></td>
-<td><audio controls preload="none" src="clips/rv05_liron.mp3"></audio><div class="w">nice man all</div></td>
-<td class="ev">p=0.38<br>partly echoes Liron (50%); far from own speech</td>
-<td class="dec"><label><input type="radio" name="rv05" value="remove"> remove</label><label><input type="radio" name="rv05" value="keep"> keep</label></td></tr>
-<tr id="rv06"><td class="t">15:56.50–15:56.91<br><span class="m">0.41 s · -14 dBFS (-2 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv06_richard.mp3"></audio><div class="w">so</div></td>
-<td><audio controls preload="none" src="clips/rv06_liron.mp3"></audio><div class="w">line of sight from camera</div></td>
-<td class="ev">p=0.50<br>waveform=Liron ncc 0.16; far from own speech; words: so</td>
-<td class="dec"><label><input type="radio" name="rv06" value="remove"> remove</label><label><input type="radio" name="rv06" value="keep"> keep</label></td></tr>
-<tr id="rv07"><td class="t">24:40.84–24:41.59<br><span class="m">0.75 s · -22 dBFS (-10 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv07_richard.mp3"></audio><div class="w">soft</div></td>
-<td><audio controls preload="none" src="clips/rv07_liron.mp3"></audio><div class="w">honesty ai</div></td>
-<td class="ev">p=0.73<br>-10 dB under speech; far from own speech; words: soft; gate stuck open 1s</td>
-<td class="dec"><label><input type="radio" name="rv07" value="remove"> remove</label><label><input type="radio" name="rv07" value="keep"> keep</label></td></tr>
-<tr id="rv08"><td class="t">25:02.30–25:02.48<br><span class="m">0.18 s · -30 dBFS (-18 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv08_richard.mp3"></audio><div class="w">so</div></td>
-<td><audio controls preload="none" src="clips/rv08_liron.mp3"></audio><div class="w">like neurips</div></td>
-<td class="ev">p=0.50<br>-18 dB under speech; far from own speech; words: so</td>
-<td class="dec"><label><input type="radio" name="rv08" value="remove"> remove</label><label><input type="radio" name="rv08" value="keep"> keep</label></td></tr>
-<tr id="rv09"><td class="t">25:03.57–25:03.91<br><span class="m">0.34 s · -25 dBFS (-13 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv09_richard.mp3"></audio><div class="w">shut</div></td>
-<td><audio controls preload="none" src="clips/rv09_liron.mp3"></audio><div class="w">and featured in bloomberg</div></td>
-<td class="ev">p=0.50<br>-13 dB under speech; far from own speech; words: shut</td>
-<td class="dec"><label><input type="radio" name="rv09" value="remove"> remove</label><label><input type="radio" name="rv09" value="keep"> keep</label></td></tr>
-<tr id="rv10"><td class="t">26:02.66–26:03.43<br><span class="m">0.77 s · -13 dBFS (-1 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv10_richard.mp3"></audio><div class="w">phew</div></td>
-<td><audio controls preload="none" src="clips/rv10_liron.mp3"></audio><div class="w">your pdoom</div></td>
-<td class="ev">p=0.27<br>waveform=Liron ncc 0.22; words: phew</td>
-<td class="dec"><label><input type="radio" name="rv10" value="remove"> remove</label><label><input type="radio" name="rv10" value="keep"> keep</label></td></tr>
-<tr id="rv11"><td class="t">26:24.14–26:24.51<br><span class="m">0.37 s · -29 dBFS (-17 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv11_richard.mp3"></audio><div class="w">that&#x27;s it</div></td>
-<td><audio controls preload="none" src="clips/rv11_liron.mp3"></audio><div class="w">we&#x27;re trapped here</div></td>
-<td class="ev">p=0.50<br>-17 dB under speech; far from own speech; words: that&#x27;s it</td>
-<td class="dec"><label><input type="radio" name="rv11" value="remove"> remove</label><label><input type="radio" name="rv11" value="keep"> keep</label></td></tr>
-<tr id="rv12"><td class="t">26:24.67–26:25.00<br><span class="m">0.33 s · -23 dBFS (-11 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv12_richard.mp3"></audio><div class="w">it&#x27;s like</div></td>
-<td><audio controls preload="none" src="clips/rv12_liron.mp3"></audio><div class="w">trapped here on earth as</div></td>
-<td class="ev">p=0.50<br>-11 dB under speech; far from own speech; words: it&#x27;s like</td>
-<td class="dec"><label><input type="radio" name="rv12" value="remove"> remove</label><label><input type="radio" name="rv12" value="keep"> keep</label></td></tr>
-<tr id="rv13"><td class="t">30:25.43–30:25.76<br><span class="m">0.33 s · -28 dBFS (-16 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv13_richard.mp3"></audio><div class="w">—</div></td>
-<td><audio controls preload="none" src="clips/rv13_liron.mp3"></audio><div class="w">spread so far beyond the</div></td>
-<td class="ev">p=0.62<br>no words; -15 dB under speech; adjacent to own speech</td>
-<td class="dec"><label><input type="radio" name="rv13" value="remove"> remove</label><label><input type="radio" name="rv13" value="keep"> keep</label></td></tr>
-<tr id="rv14"><td class="t">37:44.05–37:44.79<br><span class="m">0.74 s · -32 dBFS (-20 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv14_richard.mp3"></audio><div class="w">six months</div></td>
-<td><audio controls preload="none" src="clips/rv14_liron.mp3"></audio><div class="w">into this area but you don&#x27;t hear</div></td>
-<td class="ev">p=0.50<br>-20 dB under speech; far from own speech; words: six months</td>
-<td class="dec"><label><input type="radio" name="rv14" value="remove"> remove</label><label><input type="radio" name="rv14" value="keep"> keep</label></td></tr>
-<tr id="rv15"><td class="t">37:50.14–37:50.41<br><span class="m">0.27 s · -36 dBFS (-24 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv15_richard.mp3"></audio><div class="w">—</div></td>
-<td><audio controls preload="none" src="clips/rv15_liron.mp3"></audio><div class="w">on or like that&#x27;s</div></td>
-<td class="ev">p=0.82<br>too quiet to transcribe; -24 dB under speech; adjacent to own speech</td>
-<td class="dec"><label><input type="radio" name="rv15" value="remove"> remove</label><label><input type="radio" name="rv15" value="keep"> keep</label></td></tr>
-<tr id="rv16"><td class="t">42:44.85–42:45.16<br><span class="m">0.31 s · -37 dBFS (-25 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv16_richard.mp3"></audio><div class="w">—</div></td>
-<td><audio controls preload="none" src="clips/rv16_liron.mp3"></audio><div class="w">and stuff like that</div></td>
-<td class="ev">p=0.82<br>too quiet to transcribe; -25 dB under speech; adjacent to own speech</td>
-<td class="dec"><label><input type="radio" name="rv16" value="remove"> remove</label><label><input type="radio" name="rv16" value="keep"> keep</label></td></tr>
-<tr id="rv17"><td class="t">44:11.88–44:12.07<br><span class="m">0.19 s · -28 dBFS (-16 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv17_richard.mp3"></audio><div class="w">so</div></td>
-<td><audio controls preload="none" src="clips/rv17_liron.mp3"></audio><div class="w">you wish things</div></td>
-<td class="ev">p=0.50<br>-16 dB under speech; far from own speech; words: so</td>
-<td class="dec"><label><input type="radio" name="rv17" value="remove"> remove</label><label><input type="radio" name="rv17" value="keep"> keep</label></td></tr>
-<tr id="rv18"><td class="t">44:49.25–44:50.00<br><span class="m">0.75 s · -25 dBFS (-13 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv18_richard.mp3"></audio><div class="w">sponsor thank</div></td>
-<td><audio controls preload="none" src="clips/rv18_liron.mp3"></audio><div class="w">models right you mantas</div></td>
-<td class="ev">p=0.27<br>-13 dB under speech; far from own speech; words: sponsor thank</td>
-<td class="dec"><label><input type="radio" name="rv18" value="remove"> remove</label><label><input type="radio" name="rv18" value="keep"> keep</label></td></tr>
-<tr id="rv19"><td class="t">45:06.24–45:06.98<br><span class="m">0.74 s · -32 dBFS (-20 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv19_richard.mp3"></audio><div class="w">so you mentioned</div></td>
-<td><audio controls preload="none" src="clips/rv19_liron.mp3"></audio><div class="w">on finding preferences</div></td>
-<td class="ev">p=0.50<br>-19 dB under speech; far from own speech; words: so you mentioned</td>
-<td class="dec"><label><input type="radio" name="rv19" value="remove"> remove</label><label><input type="radio" name="rv19" value="keep"> keep</label></td></tr>
-<tr id="rv20"><td class="t">48:19.03–48:19.56<br><span class="m">0.53 s · -31 dBFS (-18 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv20_richard.mp3"></audio><div class="w">switch</div></td>
-<td><audio controls preload="none" src="clips/rv20_liron.mp3"></audio><div class="w">results from large language</div></td>
-<td class="ev">p=0.50<br>-18 dB under speech; far from own speech; words: switch</td>
-<td class="dec"><label><input type="radio" name="rv20" value="remove"> remove</label><label><input type="radio" name="rv20" value="keep"> keep</label></td></tr>
-<tr id="rv21"><td class="t">49:15.93–49:16.22<br><span class="m">0.29 s · -31 dBFS (-19 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv21_richard.mp3"></audio><div class="w">it</div></td>
-<td><audio controls preload="none" src="clips/rv21_liron.mp3"></audio><div class="w">money stuff is worth</div></td>
-<td class="ev">p=0.73<br>-19 dB under speech; far from own speech; words: it</td>
-<td class="dec"><label><input type="radio" name="rv21" value="remove"> remove</label><label><input type="radio" name="rv21" value="keep"> keep</label></td></tr>
-<tr id="rv22"><td class="t">59:29.22–59:30.74<br><span class="m">1.52 s · -19 dBFS (-7 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv22_richard.mp3"></audio><div class="w">so much museum stuff</div></td>
-<td><audio controls preload="none" src="clips/rv22_liron.mp3"></audio><div class="w">you trained it on human data so yudkowsky</div></td>
-<td class="ev">p=0.73<br>-7 dB under speech; far from own speech; words: so much museum stuff; gate stuck open 2s</td>
-<td class="dec"><label><input type="radio" name="rv22" value="remove"> remove</label><label><input type="radio" name="rv22" value="keep"> keep</label></td></tr>
-<tr id="rv23"><td class="t">60:07.05–60:07.31<br><span class="m">0.26 s · -12 dBFS (+0 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv23_richard.mp3"></audio><div class="w">—</div></td>
-<td><audio controls preload="none" src="clips/rv23_liron.mp3"></audio><div class="w">very misleading like people</div></td>
-<td class="ev">p=0.38<br>loud but no words (laugh / non-verbal?); far from own speech</td>
-<td class="dec"><label><input type="radio" name="rv23" value="remove"> remove</label><label><input type="radio" name="rv23" value="keep"> keep</label></td></tr>
-<tr id="rv24"><td class="t">60:07.75–60:08.07<br><span class="m">0.32 s · -7 dBFS (+5 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv24_richard.mp3"></audio><div class="w">—</div></td>
-<td><audio controls preload="none" src="clips/rv24_liron.mp3"></audio><div class="w">like people are like oh</div></td>
-<td class="ev">p=0.38<br>loud but no words (laugh / non-verbal?); far from own speech</td>
-<td class="dec"><label><input type="radio" name="rv24" value="remove"> remove</label><label><input type="radio" name="rv24" value="keep"> keep</label></td></tr>
-<tr id="rv25"><td class="t">65:00.02–65:00.46<br><span class="m">0.44 s · -36 dBFS (-24 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv25_richard.mp3"></audio><div class="w">—</div></td>
-<td><audio controls preload="none" src="clips/rv25_liron.mp3"></audio><div class="w">pretty much human level</div></td>
-<td class="ev">p=0.62<br>too quiet to transcribe; -24 dB under speech; adjacent to own speech</td>
-<td class="dec"><label><input type="radio" name="rv25" value="remove"> remove</label><label><input type="radio" name="rv25" value="keep"> keep</label></td></tr>
-<tr id="rv26"><td class="t">65:04.82–65:05.91<br><span class="m">1.09 s · -32 dBFS (-20 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv26_richard.mp3"></audio><div class="w">—</div></td>
-<td><audio controls preload="none" src="clips/rv26_liron.mp3"></audio><div class="w">having preferences correct</div></td>
-<td class="ev">p=0.62<br>too quiet to transcribe; -20 dB under speech; adjacent to own speech</td>
-<td class="dec"><label><input type="radio" name="rv26" value="remove"> remove</label><label><input type="radio" name="rv26" value="keep"> keep</label></td></tr>
-<tr id="rv27"><td class="t">73:01.45–73:01.86<br><span class="m">0.41 s · -25 dBFS (-13 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv27_richard.mp3"></audio><div class="w">hmm</div></td>
-<td><audio controls preload="none" src="clips/rv27_liron.mp3"></audio><div class="w">are you happy</div></td>
-<td class="ev">p=0.62<br>waveform=Liron ncc 0.20; -13 dB under speech; far from own speech; backchannel: hmm</td>
-<td class="dec"><label><input type="radio" name="rv27" value="remove"> remove</label><label><input type="radio" name="rv27" value="keep"> keep</label></td></tr>
-<tr id="rv28"><td class="t">95:34.19–95:34.89<br><span class="m">0.70 s · -29 dBFS (-17 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv28_richard.mp3"></audio><div class="w">no it&#x27;s</div></td>
-<td><audio controls preload="none" src="clips/rv28_liron.mp3"></audio><div class="w">has to do with</div></td>
-<td class="ev">p=0.27<br>-17 dB under speech; far from own speech; words: no it&#x27;s</td>
-<td class="dec"><label><input type="radio" name="rv28" value="remove"> remove</label><label><input type="radio" name="rv28" value="keep"> keep</label></td></tr>
-<tr id="rv29"><td class="t">99:14.55–99:15.41<br><span class="m">0.86 s · -16 dBFS (-4 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv29_richard.mp3"></audio><div class="w">what is this</div></td>
-<td><audio controls preload="none" src="clips/rv29_liron.mp3"></audio><div class="w">that&#x27;s not substrate independent</div></td>
-<td class="ev">p=0.27<br>ncc 0.11; far from own speech; real speech: what is this; gate stuck open 1s</td>
-<td class="dec"><label><input type="radio" name="rv29" value="remove"> remove</label><label><input type="radio" name="rv29" value="keep"> keep</label></td></tr>
-<tr id="rv30"><td class="t">105:11.15–105:11.43<br><span class="m">0.28 s · -10 dBFS (+2 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv30_richard.mp3"></audio><div class="w">hello</div></td>
-<td><audio controls preload="none" src="clips/rv30_liron.mp3"></audio><div class="w">don&#x27;t know if it&#x27;s me or you</div></td>
-<td class="ev">p=0.73<br>waveform=Liron ncc 0.21; far from own speech; words: hello</td>
-<td class="dec"><label><input type="radio" name="rv30" value="remove"> remove</label><label><input type="radio" name="rv30" value="keep"> keep</label></td></tr>
-<tr id="rv31"><td class="t">105:26.03–105:26.15<br><span class="m">0.12 s · -11 dBFS (+1 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv31_richard.mp3"></audio><div class="w">—</div></td>
-<td><audio controls preload="none" src="clips/rv31_liron.mp3"></audio><div class="w">coming in soft right</div></td>
-<td class="ev">p=0.62<br>too quiet to transcribe</td>
-<td class="dec"><label><input type="radio" name="rv31" value="remove"> remove</label><label><input type="radio" name="rv31" value="keep"> keep</label></td></tr>
-<tr id="rv32"><td class="t">105:27.07–105:29.04<br><span class="m">1.97 s · -7 dBFS (+5 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv32_richard.mp3"></audio><div class="w">yeah the soundbar seems to be</div></td>
-<td><audio controls preload="none" src="clips/rv32_liron.mp3"></audio><div class="w">mean look at your pr look at your soundbar it doesn&#x27;t seem to be filling</div></td>
-<td class="ev">p=0.82<br>echoes Liron: yeah the soundbar seems to be; far from own speech</td>
-<td class="dec"><label><input type="radio" name="rv32" value="remove"> remove</label><label><input type="radio" name="rv32" value="keep"> keep</label></td></tr>
-<tr id="rv33"><td class="t">112:01.82–112:02.09<br><span class="m">0.27 s · -22 dBFS (-10 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv33_richard.mp3"></audio><div class="w">hmm</div></td>
-<td><audio controls preload="none" src="clips/rv33_liron.mp3"></audio><div class="w">like high dimensional function</div></td>
-<td class="ev">p=0.82<br>waveform=Liron ncc 0.19; -10 dB under speech; far from own speech; backchannel: hmm</td>
-<td class="dec"><label><input type="radio" name="rv33" value="remove"> remove</label><label><input type="radio" name="rv33" value="keep"> keep</label></td></tr>
-<tr id="rv34"><td class="t">115:28.53–115:28.84<br><span class="m">0.31 s · -20 dBFS (-8 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv34_richard.mp3"></audio><div class="w">mmhmm</div></td>
-<td><audio controls preload="none" src="clips/rv34_liron.mp3"></audio><div class="w">it was supposed to be a metaphor</div></td>
-<td class="ev">p=0.27<br>ncc 0.13; -8 dB under speech; far from own speech; backchannel: mmhmm</td>
-<td class="dec"><label><input type="radio" name="rv34" value="remove"> remove</label><label><input type="radio" name="rv34" value="keep"> keep</label></td></tr>
-<tr id="rv35"><td class="t">119:08.08–119:09.12<br><span class="m">1.04 s · -8 dBFS (+4 dB)</span></td>
-<td><audio controls preload="none" src="clips/rv35_richard.mp3"></audio><div class="w">um thank you for having me</div></td>
-<td><audio controls preload="none" src="clips/rv35_liron.mp3"></audio><div class="w">richard ren thanks so much for coming on</div></td>
-<td class="ev">p=0.38<br>partly echoes Liron (33%); far from own speech</td>
-<td class="dec"><label><input type="radio" name="rv35" value="remove"> remove</label><label><input type="radio" name="rv35" value="keep"> keep</label></td></tr>
+<div class="tw"><table><thead><tr><th>Where</th><th>Richard's track</th><th>Liron said just before</th><th>Evidence</th><th>Decision</th></tr></thead><tbody>
+<tr id="rv00"><td class="t">7:04.04–7:04.36<br><span class="m">0.32 s · -7 dBFS (+5 dB)</span></td><td><audio controls preload="none" src="clips/rv00_target.mp3"></audio><div class="w">heard: okay</div></td><td><div class="w">cool</div></td><td class="ev">p=0.38<br>waveform=Liron ncc 0.28; far from own speech; backchannel: okay</td><td class="dec"><label><input type="radio" name="rv00" value="remove"> remove</label><label><input type="radio" name="rv00" value="keep"> keep</label></td></tr>
+<tr id="rv01"><td class="t">10:29.14–10:29.39<br><span class="m">0.25 s · -21 dBFS (-8 dB)</span></td><td><audio controls preload="none" src="clips/rv01_target.mp3"></audio><div class="w">heard: —</div></td><td><div class="w">and yeah great talk</div></td><td class="ev">p=0.82<br>no words; -8 dB under speech</td><td class="dec"><label><input type="radio" name="rv01" value="remove"> remove</label><label><input type="radio" name="rv01" value="keep"> keep</label></td></tr>
+<tr id="rv02"><td class="t">12:49.79–12:50.08<br><span class="m">0.29 s · -11 dBFS (+1 dB)</span></td><td><audio controls preload="none" src="clips/rv02_target.mp3"></audio><div class="w">heard: —</div></td><td><div class="w">i&#x27;ll check the volume</div></td><td class="ev">p=0.38<br>loud but no words (laugh / non-verbal?); far from own speech</td><td class="dec"><label><input type="radio" name="rv02" value="remove"> remove</label><label><input type="radio" name="rv02" value="keep"> keep</label></td></tr>
+<tr id="rv03"><td class="t">12:53.97–12:54.29<br><span class="m">0.32 s · -31 dBFS (-19 dB)</span></td><td><audio controls preload="none" src="clips/rv03_target.mp3"></audio><div class="w">heard: sure</div></td><td><div class="w">—</div></td><td class="ev">p=0.73<br>ncc 0.12; -19 dB under speech; far from own speech; backchannel: sure</td><td class="dec"><label><input type="radio" name="rv03" value="remove"> remove</label><label><input type="radio" name="rv03" value="keep"> keep</label></td></tr>
+<tr id="rv04"><td class="t">13:16.09–13:17.70<br><span class="m">1.61 s · -8 dBFS (+4 dB)</span></td><td><audio controls preload="none" src="clips/rv04_target.mp3"></audio><div class="w">heard: backup audio yes</div></td><td><div class="w">got backup audio</div></td><td class="ev">p=0.82<br>echoes Liron: backup audio yes; far from own speech</td><td class="dec"><label><input type="radio" name="rv04" value="remove"> remove</label><label><input type="radio" name="rv04" value="keep"> keep</label></td></tr>
+<tr id="rv05"><td class="t">13:29.93–13:30.34<br><span class="m">0.41 s · -10 dBFS (+2 dB)</span></td><td><audio controls preload="none" src="clips/rv05_target.mp3"></audio><div class="w">heard: all right</div></td><td><div class="w">nice man all</div></td><td class="ev">p=0.38<br>partly echoes Liron (50%); far from own speech</td><td class="dec"><label><input type="radio" name="rv05" value="remove"> remove</label><label><input type="radio" name="rv05" value="keep"> keep</label></td></tr>
+<tr id="rv06"><td class="t">15:56.50–15:56.91<br><span class="m">0.41 s · -14 dBFS (-2 dB)</span></td><td><audio controls preload="none" src="clips/rv06_target.mp3"></audio><div class="w">heard: so</div></td><td><div class="w">line of sight from camera</div></td><td class="ev">p=0.50<br>waveform=Liron ncc 0.16; far from own speech; words: so</td><td class="dec"><label><input type="radio" name="rv06" value="remove"> remove</label><label><input type="radio" name="rv06" value="keep"> keep</label></td></tr>
+<tr id="rv07"><td class="t">24:40.84–24:41.59<br><span class="m">0.75 s · -22 dBFS (-10 dB)</span></td><td><audio controls preload="none" src="clips/rv07_target.mp3"></audio><div class="w">heard: soft</div></td><td><div class="w">honesty ai</div></td><td class="ev">p=0.73<br>-10 dB under speech; far from own speech; words: soft; gate stuck open 1s</td><td class="dec"><label><input type="radio" name="rv07" value="remove"> remove</label><label><input type="radio" name="rv07" value="keep"> keep</label></td></tr>
+<tr id="rv08"><td class="t">25:02.30–25:02.48<br><span class="m">0.18 s · -30 dBFS (-18 dB)</span></td><td><audio controls preload="none" src="clips/rv08_target.mp3"></audio><div class="w">heard: so</div></td><td><div class="w">like neurips</div></td><td class="ev">p=0.50<br>-18 dB under speech; far from own speech; words: so</td><td class="dec"><label><input type="radio" name="rv08" value="remove"> remove</label><label><input type="radio" name="rv08" value="keep"> keep</label></td></tr>
+<tr id="rv09"><td class="t">25:03.57–25:03.91<br><span class="m">0.34 s · -25 dBFS (-13 dB)</span></td><td><audio controls preload="none" src="clips/rv09_target.mp3"></audio><div class="w">heard: shut</div></td><td><div class="w">and featured in bloomberg</div></td><td class="ev">p=0.50<br>-13 dB under speech; far from own speech; words: shut</td><td class="dec"><label><input type="radio" name="rv09" value="remove"> remove</label><label><input type="radio" name="rv09" value="keep"> keep</label></td></tr>
+<tr id="rv10"><td class="t">26:02.66–26:03.43<br><span class="m">0.77 s · -13 dBFS (-1 dB)</span></td><td><audio controls preload="none" src="clips/rv10_target.mp3"></audio><div class="w">heard: phew</div></td><td><div class="w">your pdoom</div></td><td class="ev">p=0.27<br>waveform=Liron ncc 0.22; words: phew</td><td class="dec"><label><input type="radio" name="rv10" value="remove"> remove</label><label><input type="radio" name="rv10" value="keep"> keep</label></td></tr>
+<tr id="rv11"><td class="t">26:24.14–26:24.51<br><span class="m">0.37 s · -29 dBFS (-17 dB)</span></td><td><audio controls preload="none" src="clips/rv11_target.mp3"></audio><div class="w">heard: that&#x27;s it</div></td><td><div class="w">we&#x27;re trapped here</div></td><td class="ev">p=0.50<br>-17 dB under speech; far from own speech; words: that&#x27;s it</td><td class="dec"><label><input type="radio" name="rv11" value="remove"> remove</label><label><input type="radio" name="rv11" value="keep"> keep</label></td></tr>
+<tr id="rv12"><td class="t">26:24.67–26:25.00<br><span class="m">0.33 s · -23 dBFS (-11 dB)</span></td><td><audio controls preload="none" src="clips/rv12_target.mp3"></audio><div class="w">heard: it&#x27;s like</div></td><td><div class="w">trapped here on earth as</div></td><td class="ev">p=0.50<br>-11 dB under speech; far from own speech; words: it&#x27;s like</td><td class="dec"><label><input type="radio" name="rv12" value="remove"> remove</label><label><input type="radio" name="rv12" value="keep"> keep</label></td></tr>
+<tr id="rv13"><td class="t">30:25.43–30:25.76<br><span class="m">0.33 s · -28 dBFS (-16 dB)</span></td><td><audio controls preload="none" src="clips/rv13_target.mp3"></audio><div class="w">heard: —</div></td><td><div class="w">spread so far beyond the</div></td><td class="ev">p=0.62<br>no words; -15 dB under speech; adjacent to own speech</td><td class="dec"><label><input type="radio" name="rv13" value="remove"> remove</label><label><input type="radio" name="rv13" value="keep"> keep</label></td></tr>
+<tr id="rv14"><td class="t">37:44.05–37:44.79<br><span class="m">0.74 s · -32 dBFS (-20 dB)</span></td><td><audio controls preload="none" src="clips/rv14_target.mp3"></audio><div class="w">heard: six months</div></td><td><div class="w">into this area but you don&#x27;t hear</div></td><td class="ev">p=0.50<br>-20 dB under speech; far from own speech; words: six months</td><td class="dec"><label><input type="radio" name="rv14" value="remove"> remove</label><label><input type="radio" name="rv14" value="keep"> keep</label></td></tr>
+<tr id="rv15"><td class="t">37:50.14–37:50.41<br><span class="m">0.27 s · -36 dBFS (-24 dB)</span></td><td><audio controls preload="none" src="clips/rv15_target.mp3"></audio><div class="w">heard: —</div></td><td><div class="w">on or like that&#x27;s</div></td><td class="ev">p=0.82<br>too quiet to transcribe; -24 dB under speech; adjacent to own speech</td><td class="dec"><label><input type="radio" name="rv15" value="remove"> remove</label><label><input type="radio" name="rv15" value="keep"> keep</label></td></tr>
+<tr id="rv16"><td class="t">42:44.85–42:45.16<br><span class="m">0.31 s · -37 dBFS (-25 dB)</span></td><td><audio controls preload="none" src="clips/rv16_target.mp3"></audio><div class="w">heard: —</div></td><td><div class="w">and stuff like that</div></td><td class="ev">p=0.82<br>too quiet to transcribe; -25 dB under speech; adjacent to own speech</td><td class="dec"><label><input type="radio" name="rv16" value="remove"> remove</label><label><input type="radio" name="rv16" value="keep"> keep</label></td></tr>
+<tr id="rv17"><td class="t">44:11.88–44:12.07<br><span class="m">0.19 s · -28 dBFS (-16 dB)</span></td><td><audio controls preload="none" src="clips/rv17_target.mp3"></audio><div class="w">heard: so</div></td><td><div class="w">you wish things</div></td><td class="ev">p=0.50<br>-16 dB under speech; far from own speech; words: so</td><td class="dec"><label><input type="radio" name="rv17" value="remove"> remove</label><label><input type="radio" name="rv17" value="keep"> keep</label></td></tr>
+<tr id="rv18"><td class="t">44:49.25–44:50.00<br><span class="m">0.75 s · -25 dBFS (-13 dB)</span></td><td><audio controls preload="none" src="clips/rv18_target.mp3"></audio><div class="w">heard: sponsor thank</div></td><td><div class="w">models right you mantas</div></td><td class="ev">p=0.27<br>-13 dB under speech; far from own speech; words: sponsor thank</td><td class="dec"><label><input type="radio" name="rv18" value="remove"> remove</label><label><input type="radio" name="rv18" value="keep"> keep</label></td></tr>
+<tr id="rv19"><td class="t">45:06.24–45:06.98<br><span class="m">0.74 s · -32 dBFS (-20 dB)</span></td><td><audio controls preload="none" src="clips/rv19_target.mp3"></audio><div class="w">heard: so you mentioned</div></td><td><div class="w">on finding preferences</div></td><td class="ev">p=0.50<br>-19 dB under speech; far from own speech; words: so you mentioned</td><td class="dec"><label><input type="radio" name="rv19" value="remove"> remove</label><label><input type="radio" name="rv19" value="keep"> keep</label></td></tr>
+<tr id="rv20"><td class="t">48:19.03–48:19.56<br><span class="m">0.53 s · -31 dBFS (-18 dB)</span></td><td><audio controls preload="none" src="clips/rv20_target.mp3"></audio><div class="w">heard: switch</div></td><td><div class="w">results from large language</div></td><td class="ev">p=0.50<br>-18 dB under speech; far from own speech; words: switch</td><td class="dec"><label><input type="radio" name="rv20" value="remove"> remove</label><label><input type="radio" name="rv20" value="keep"> keep</label></td></tr>
+<tr id="rv21"><td class="t">49:15.93–49:16.22<br><span class="m">0.29 s · -31 dBFS (-19 dB)</span></td><td><audio controls preload="none" src="clips/rv21_target.mp3"></audio><div class="w">heard: it</div></td><td><div class="w">money stuff is worth</div></td><td class="ev">p=0.73<br>-19 dB under speech; far from own speech; words: it</td><td class="dec"><label><input type="radio" name="rv21" value="remove"> remove</label><label><input type="radio" name="rv21" value="keep"> keep</label></td></tr>
+<tr id="rv22"><td class="t">59:29.22–59:30.74<br><span class="m">1.52 s · -19 dBFS (-7 dB)</span></td><td><audio controls preload="none" src="clips/rv22_target.mp3"></audio><div class="w">heard: so much museum stuff</div></td><td><div class="w">you trained it on human data so yudkowsky</div></td><td class="ev">p=0.73<br>-7 dB under speech; far from own speech; words: so much museum stuff; gate stuck open 2s</td><td class="dec"><label><input type="radio" name="rv22" value="remove"> remove</label><label><input type="radio" name="rv22" value="keep"> keep</label></td></tr>
+<tr id="rv23"><td class="t">60:07.05–60:07.31<br><span class="m">0.26 s · -12 dBFS (+0 dB)</span></td><td><audio controls preload="none" src="clips/rv23_target.mp3"></audio><div class="w">heard: —</div></td><td><div class="w">very misleading like people</div></td><td class="ev">p=0.38<br>loud but no words (laugh / non-verbal?); far from own speech</td><td class="dec"><label><input type="radio" name="rv23" value="remove"> remove</label><label><input type="radio" name="rv23" value="keep"> keep</label></td></tr>
+<tr id="rv24"><td class="t">60:07.75–60:08.07<br><span class="m">0.32 s · -7 dBFS (+5 dB)</span></td><td><audio controls preload="none" src="clips/rv24_target.mp3"></audio><div class="w">heard: —</div></td><td><div class="w">like people are like oh</div></td><td class="ev">p=0.38<br>loud but no words (laugh / non-verbal?); far from own speech</td><td class="dec"><label><input type="radio" name="rv24" value="remove"> remove</label><label><input type="radio" name="rv24" value="keep"> keep</label></td></tr>
+<tr id="rv25"><td class="t">65:00.02–65:00.46<br><span class="m">0.44 s · -36 dBFS (-24 dB)</span></td><td><audio controls preload="none" src="clips/rv25_target.mp3"></audio><div class="w">heard: —</div></td><td><div class="w">pretty much human level</div></td><td class="ev">p=0.62<br>too quiet to transcribe; -24 dB under speech; adjacent to own speech</td><td class="dec"><label><input type="radio" name="rv25" value="remove"> remove</label><label><input type="radio" name="rv25" value="keep"> keep</label></td></tr>
+<tr id="rv26"><td class="t">65:04.82–65:05.91<br><span class="m">1.09 s · -32 dBFS (-20 dB)</span></td><td><audio controls preload="none" src="clips/rv26_target.mp3"></audio><div class="w">heard: —</div></td><td><div class="w">having preferences correct</div></td><td class="ev">p=0.62<br>too quiet to transcribe; -20 dB under speech; adjacent to own speech</td><td class="dec"><label><input type="radio" name="rv26" value="remove"> remove</label><label><input type="radio" name="rv26" value="keep"> keep</label></td></tr>
+<tr id="rv27"><td class="t">73:01.45–73:01.86<br><span class="m">0.41 s · -25 dBFS (-13 dB)</span></td><td><audio controls preload="none" src="clips/rv27_target.mp3"></audio><div class="w">heard: hmm</div></td><td><div class="w">are you happy</div></td><td class="ev">p=0.62<br>waveform=Liron ncc 0.20; -13 dB under speech; far from own speech; backchannel: hmm</td><td class="dec"><label><input type="radio" name="rv27" value="remove"> remove</label><label><input type="radio" name="rv27" value="keep"> keep</label></td></tr>
+<tr id="rv28"><td class="t">95:34.19–95:34.89<br><span class="m">0.70 s · -29 dBFS (-17 dB)</span></td><td><audio controls preload="none" src="clips/rv28_target.mp3"></audio><div class="w">heard: no it&#x27;s</div></td><td><div class="w">has to do with</div></td><td class="ev">p=0.27<br>-17 dB under speech; far from own speech; words: no it&#x27;s</td><td class="dec"><label><input type="radio" name="rv28" value="remove"> remove</label><label><input type="radio" name="rv28" value="keep"> keep</label></td></tr>
+<tr id="rv29"><td class="t">99:14.55–99:15.41<br><span class="m">0.86 s · -16 dBFS (-4 dB)</span></td><td><audio controls preload="none" src="clips/rv29_target.mp3"></audio><div class="w">heard: what is this</div></td><td><div class="w">that&#x27;s not substrate independent</div></td><td class="ev">p=0.27<br>ncc 0.11; far from own speech; real speech: what is this; gate stuck open 1s</td><td class="dec"><label><input type="radio" name="rv29" value="remove"> remove</label><label><input type="radio" name="rv29" value="keep"> keep</label></td></tr>
+<tr id="rv30"><td class="t">105:11.15–105:11.43<br><span class="m">0.28 s · -10 dBFS (+2 dB)</span></td><td><audio controls preload="none" src="clips/rv30_target.mp3"></audio><div class="w">heard: hello</div></td><td><div class="w">don&#x27;t know if it&#x27;s me or you</div></td><td class="ev">p=0.73<br>waveform=Liron ncc 0.21; far from own speech; words: hello</td><td class="dec"><label><input type="radio" name="rv30" value="remove"> remove</label><label><input type="radio" name="rv30" value="keep"> keep</label></td></tr>
+<tr id="rv31"><td class="t">105:26.03–105:26.15<br><span class="m">0.12 s · -11 dBFS (+1 dB)</span></td><td><audio controls preload="none" src="clips/rv31_target.mp3"></audio><div class="w">heard: —</div></td><td><div class="w">coming in soft right</div></td><td class="ev">p=0.62<br>too quiet to transcribe</td><td class="dec"><label><input type="radio" name="rv31" value="remove"> remove</label><label><input type="radio" name="rv31" value="keep"> keep</label></td></tr>
+<tr id="rv32"><td class="t">105:27.07–105:29.04<br><span class="m">1.97 s · -7 dBFS (+5 dB)</span></td><td><audio controls preload="none" src="clips/rv32_target.mp3"></audio><div class="w">heard: yeah the soundbar seems to be</div></td><td><div class="w">mean look at your pr look at your soundbar it doesn&#x27;t seem to be filling</div></td><td class="ev">p=0.82<br>echoes Liron: yeah the soundbar seems to be; far from own speech</td><td class="dec"><label><input type="radio" name="rv32" value="remove"> remove</label><label><input type="radio" name="rv32" value="keep"> keep</label></td></tr>
+<tr id="rv33"><td class="t">112:01.82–112:02.09<br><span class="m">0.27 s · -22 dBFS (-10 dB)</span></td><td><audio controls preload="none" src="clips/rv33_target.mp3"></audio><div class="w">heard: hmm</div></td><td><div class="w">like high dimensional function</div></td><td class="ev">p=0.82<br>waveform=Liron ncc 0.19; -10 dB under speech; far from own speech; backchannel: hmm</td><td class="dec"><label><input type="radio" name="rv33" value="remove"> remove</label><label><input type="radio" name="rv33" value="keep"> keep</label></td></tr>
+<tr id="rv34"><td class="t">115:28.53–115:28.84<br><span class="m">0.31 s · -20 dBFS (-8 dB)</span></td><td><audio controls preload="none" src="clips/rv34_target.mp3"></audio><div class="w">heard: mmhmm</div></td><td><div class="w">it was supposed to be a metaphor</div></td><td class="ev">p=0.27<br>ncc 0.13; -8 dB under speech; far from own speech; backchannel: mmhmm</td><td class="dec"><label><input type="radio" name="rv34" value="remove"> remove</label><label><input type="radio" name="rv34" value="keep"> keep</label></td></tr>
+<tr id="rv35"><td class="t">119:08.08–119:09.12<br><span class="m">1.04 s · -8 dBFS (+4 dB)</span></td><td><audio controls preload="none" src="clips/rv35_target.mp3"></audio><div class="w">heard: um thank you for having me</div></td><td><div class="w">richard ren thanks so much for coming on</div></td><td class="ev">p=0.38<br>partly echoes Liron (33%); far from own speech</td><td class="dec"><label><input type="radio" name="rv35" value="remove"> remove</label><label><input type="radio" name="rv35" value="keep"> keep</label></td></tr>
 </tbody></table></div>
 <p style="margin-top:16px"><button id="copy">Copy decisions</button> <button id="clear">Clear</button> <span class="m" id="cnt"></span></p>
 <pre id="out"></pre>
