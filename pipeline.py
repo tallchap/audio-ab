@@ -85,7 +85,9 @@ def step_score(a):
     def match(rw, lw):
         return sum(1 for w in rw if w in lw or any(difflib.SequenceMatcher(None, w, x).ratio() >= 0.8 for x in lw)) / len(rw) if rw else 0.0
     for r in rows:
-        if r["ract"] < 0.2: r["tier"] = "n/a"; continue
+        if r["ract"] < 0.2:   # reference not active: not scored, but an island the hard rules flagged must not fall through the cracks
+            if r["why"]: r.update(rel=round(r["peak"] - s90, 1), words="", ref_words="", lex=0.0, score=None, p=0.9 if r["peak"] <= -30 else 0.5, evidence="hard rule: %s; reference quiet so not scored" % r["why"])
+            r["tier"] = "n/a" if not r["why"] else "remove" if r["peak"] <= -30 else "review"; continue
         rel = r["peak"] - s90; rw = seg.get(r.get("id", ""), None); lw = lwords(r["t0"], r["t1"]); m = match(rw, lw) if rw else 0.0
         ev = []; s = 0
         if r["ncc"] >= 0.15: s += 3; ev.append("waveform=%s ncc %.2f" % (a.ref_name, r["ncc"]))
