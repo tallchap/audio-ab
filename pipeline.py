@@ -105,6 +105,7 @@ def step_score(a):
         if whisper: s += 3; ev.append("whispery (centroid %d Hz, tilt %+.0f dB)" % (r["centroid"], r["tilt"]))
         elif voiced: s -= 1.5; ev.append("voiced / close-mic")
         if not whisper and not rw and rel > -6 and r["dur"] < 0.35: s += 3; ev.append("voiced blip, no words")
+        if voiced and not rw and r["dur"] >= 1.0: s += 2; ev.append("long voiced non-verbal (%.1fs), no words" % r["dur"])
         if r["nbr_whisper"] >= 2 and not real: s += 2; ev.append("inside a bleed stretch (%d whispery islands within 1.5 s)" % r["nbr_whisper"])
         if rw and m < 0.3:
             if all(w in BC for w in rw):
@@ -141,7 +142,8 @@ def step_render(a, decisions=None):
     print("render: %d cuts, %.1f s muted -> %s" % (len(cuts), sum(b - x for x, b in cuts), out))
 
 def step_review(a):
-    rows = J(a.work + "/scored.json")["rows"]; rv = [r for r in rows if r["tier"] == "review"]
+    rows = J(a.work + "/scored.json")["rows"]; done = read_decisions(a.decisions) if a.decisions else {}
+    rv = [r for r in rows if r["tier"] == "review" and mmss(r["t0"]) not in done]   # --decisions: skip rows already called
     d = a.work + "/review"; os.makedirs(d + "/clips", exist_ok=True); cards = []
     for i, r in enumerate(rv):
         rid = "rv%02d" % i; t0 = max(0, r["t0"] - 1); dur = r["dur"] + 2
@@ -272,6 +274,6 @@ if __name__ == "__main__":
     ap.add_argument("--target", required=True); ap.add_argument("--reference", required=True); ap.add_argument("--work", required=True)
     ap.add_argument("--key"); ap.add_argument("--names", default="Target,Reference"); ap.add_argument("--out"); ap.add_argument("--decisions")
     ap.add_argument("--n", type=int, default=10); ap.add_argument("--seed", type=int, default=1); ap.add_argument("--exclude")
-    ap.add_argument("--remove-p", type=float, default=0.85); ap.add_argument("--keep-p", type=float, default=0.25); ap.add_argument("--no-learned", action="store_true")
+    ap.add_argument("--remove-p", type=float, default=0.70); ap.add_argument("--keep-p", type=float, default=0.20); ap.add_argument("--no-learned", action="store_true")
     a = ap.parse_args(); a.target_name, a.ref_name = (a.names.split(",") + ["Reference"])[:2]; os.makedirs(a.work, exist_ok=True)
     for s in a.steps: STEPS[s](a)
