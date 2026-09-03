@@ -11,6 +11,7 @@ Whole-track bleed-artifact removal with a human review tier.  Steps (each cached
   apply     --decisions FILE (+ learned.json if present)                              -> <target>_final.wav
 """
 import argparse, csv, difflib, glob, html, json, math, os, re, subprocess, sys
+import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from debleed import decode, envelope, analyse, classify, render, mmss
 
@@ -28,10 +29,31 @@ def scribe(key, path):
                       files={"file": open(path, "rb")}, timeout=600)
     r.raise_for_status(); return r.json()
 
+def spectral(T, rows, sr=16000):
+    """Per-island timbre: bleed arrives via speakers -> room -> mic and loses the low-frequency
+    voicing a close mic gives the speaker's own voice, so it sounds whispery. centroid (Hz),
+    tilt = 2-4 kHz vs 200-1000 Hz energy (dB), voicing = max normalised autocorrelation over
+    pitch lags 80-400 Hz. Medians over the frames within 20 dB of the island's peak."""
+    n, h = 512, 160; win = np.hanning(n); f = np.fft.rfftfreq(n, 1 / sr)
+    b1, b2 = (f >= 2000) & (f < 4000), (f >= 200) & (f < 1000)
+    for r in rows:
+        x = T[int(r["t0"] * sr):int(r["t1"] * sr)]
+        if len(x) < n: x = np.pad(x, (0, n - len(x)))
+        fr = np.lib.stride_tricks.sliding_window_view(x, n)[::h] * win
+        e = (fr ** 2).mean(1); fr = fr[e > e.max() * 0.01]
+        S = np.abs(np.fft.rfft(fr, axis=1)) ** 2
+        ac = np.fft.irfft(S, axis=1)[:, :n]; ac = ac / (ac[:, :1] + 1e-12)
+        r["centroid"] = round(float(np.median((S * f).sum(1) / (S.sum(1) + 1e-12))))
+        r["tilt"] = round(float(np.median(10 * np.log10((S[:, b1].sum(1) + 1e-12) / (S[:, b2].sum(1) + 1e-12)))), 1)
+        r["voicing"] = round(float(np.median(ac[:, int(sr / 400):int(sr / 80)].max(1))), 2)
+    wh = [(r["t0"], r["t1"]) for r in rows if r["centroid"] >= 1500 or r["tilt"] >= -5]
+    for r in rows:   # whispery islands within 1.5 s of this one (context: a blip inside a bleed stretch)
+        r["nbr_whisper"] = sum(1 for t0, t1 in wh if t0 != r["t0"] and t0 < r["t1"] + 1.5 and t1 > r["t0"] - 1.5)
+
 def step_analyse(a):
     T, R = decode(a.target), decode(a.reference)
     tdb, rdb = envelope(T), envelope(R); n = min(len(tdb), len(rdb)); tdb, rdb = tdb[:n], rdb[:n]
-    s90, rows = analyse(T, R, tdb, rdb); rows = classify(rows, s90)
+    s90, rows = analyse(T, R, tdb, rdb); rows = classify(rows, s90); spectral(T, rows)
     own = [(r["t0"], r["t1"]) for r in rows if r["peak"] > -16 and r["dur"] >= 0.8]
     os.makedirs(a.work + "/segs", exist_ok=True); cand = []
     for r in rows:
@@ -78,10 +100,21 @@ def step_score(a):
         elif rel <= -6: s += 1; ev.append("%.0f dB under speech" % rel)
         if r["dur"] <= 0.4: s += 1
         if r["own_dist"] > 1.5: s += 1; ev.append("far from own speech")
+        whisper = r["centroid"] >= 1500 or r["tilt"] >= -5; voiced = r["centroid"] < 700 and r["tilt"] < -15
+        real = bool(rw) and len(rw) >= 3 and rel > -6 and m < 0.3
+        if whisper: s += 3; ev.append("whispery (centroid %d Hz, tilt %+.0f dB)" % (r["centroid"], r["tilt"]))
+        elif voiced: s -= 1.5; ev.append("voiced / close-mic")
+        if not whisper and not rw and rel > -6 and r["dur"] < 0.35: s += 3; ev.append("voiced blip, no words")
+        if r["nbr_whisper"] >= 2 and not real: s += 2; ev.append("inside a bleed stretch (%d whispery islands within 1.5 s)" % r["nbr_whisper"])
         if rw and m < 0.3:
-            if all(w in BC for w in rw): s -= 3; ev.append("backchannel: %s" % " ".join(rw))
-            elif len(rw) >= 3 and rel > -6: s -= 4; ev.append("real speech: %s" % " ".join(rw))
-            else: s -= 1.5; ev.append("words: %s" % " ".join(rw))
+            if all(w in BC for w in rw):
+                if rel <= -6: s += 1.5; ev.append("quiet backchannel under %s: %s" % (a.ref_name, " ".join(rw)))
+                else: s -= 3; ev.append("backchannel at speech level: %s" % " ".join(rw))
+            elif real: s -= 4; ev.append("real speech: %s" % " ".join(rw))
+            elif rel > -6 and not whisper: s -= 3; ev.append("words at speech level: %s" % " ".join(rw))
+            elif rel > -3 and whisper: s -= 2.5; ev.append("loud words despite whispery timbre: %s" % " ".join(rw))
+            elif rel <= -10 and len(rw) <= 2: s += 1; ev.append("quiet mutter under %s: %s" % (a.ref_name, " ".join(rw)))
+            else: s -= 1; ev.append("words: %s" % " ".join(rw))
         if r["own_dist"] <= 0.3: s -= 2; ev.append("adjacent to own speech")
         if r["why"] == "sustained low level under reference": s += 3; ev.append("gate stuck open %.0fs" % r["dur"])
         if r["peak"] <= -40: s = max(s, 6); ev.append("inaudible")
@@ -90,9 +123,9 @@ def step_score(a):
         r["tier"] = "remove" if p >= a.remove_p else "keep" if p <= a.keep_p else "review"
     dump(dict(s90=s90, rows=rows), a.work + "/scored.json")
     with open(a.work + "/overlaps.csv", "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f); w.writerow(["start", "end", "dur_s", "peak_dbfs", "vs_speech_db", "ncc", "target_words", "ref_words_before", "lexical_match", "p_artifact", "tier", "evidence"])
+        w = csv.writer(f); w.writerow(["start", "end", "dur_s", "peak_dbfs", "vs_speech_db", "centroid_hz", "tilt_db", "ncc", "target_words", "ref_words_before", "lexical_match", "p_artifact", "tier", "evidence"])
         for r in rows:
-            if r["tier"] != "n/a": w.writerow([mmss(r["t0"]), mmss(r["t1"]), "%.2f" % r["dur"], "%.1f" % r["peak"], r["rel"], "%.2f" % r["ncc"], r["words"], r["ref_words"], r["lex"], r["p"], r["tier"], r["evidence"]])
+            if r["tier"] != "n/a": w.writerow([mmss(r["t0"]), mmss(r["t1"]), "%.2f" % r["dur"], "%.1f" % r["peak"], r["rel"], r["centroid"], r["tilt"], "%.2f" % r["ncc"], r["words"], r["ref_words"], r["lex"], r["p"], r["tier"], r["evidence"]])
     from collections import Counter
     C = Counter(r["tier"] for r in rows); tot = lambda t: sum(r["dur"] for r in rows if r["tier"] == t)
     print("score: remove %d (%.0fs)  keep %d (%.0fs)  review %d (%.0fs)" % (C["remove"], tot("remove"), C["keep"], tot("keep"), C["review"], tot("review")))
@@ -101,8 +134,8 @@ def sr_of(p): return int(subprocess.run(["ffprobe", "-v", "error", "-show_entrie
 
 def step_render(a, decisions=None):
     rows = J(a.work + "/scored.json")["rows"]
-    cuts = [(r["t0"], r["t1"]) for r in rows if r["tier"] == "remove"]
-    if decisions: cuts += [(r["t0"], r["t1"]) for r in rows if r["tier"] == "review" and decisions.get(mmss(r["t0"])) == "remove"]
+    decisions = decisions or {}   # an explicit reviewer decision overrides the tier, whatever tier it is
+    cuts = [(r["t0"], r["t1"]) for r in rows if decisions.get(mmss(r["t0"]), "remove" if r["tier"] == "remove" else "keep") == "remove"]
     out = a.out or os.path.splitext(a.target)[0] + ("_final.wav" if decisions else "_debleed.wav")
     render(a.target, out, cuts, sr_of(a.target))
     print("render: %d cuts, %.1f s muted -> %s" % (len(cuts), sum(b - x for x, b in cuts), out))
@@ -135,7 +168,7 @@ def read_decisions(path):
     return dec
 
 # features the reviewer's decisions are distilled over: (name, extractor, unit for the printed rule)
-FEATS = [("vs_speech_db", lambda r: r["rel"], "dB"), ("ncc", lambda r: r["ncc"], ""), ("dur_s", lambda r: r["dur"], "s"),
+FEATS = [("vs_speech_db", lambda r: r["rel"], "dB"), ("centroid_hz", lambda r: r["centroid"], "Hz"), ("tilt_db", lambda r: r["tilt"], "dB"), ("voicing", lambda r: r["voicing"], ""), ("nbr_whisper", lambda r: r["nbr_whisper"], ""), ("ncc", lambda r: r["ncc"], ""), ("dur_s", lambda r: r["dur"], "s"),
          ("lexical_match", lambda r: r["lex"], ""), ("n_words", lambda r: len(r["words"].split()), ""),
          ("own_dist_s", lambda r: min(r["own_dist"], 10), "s"), ("peak_dbfs", lambda r: r["peak"], "dBFS"), ("p_artifact", lambda r: r["p"], "")]
 
@@ -183,12 +216,62 @@ def step_apply(a):
         for u in J(a.work + "/learned.json")["undecided"]: dec.setdefault(u["start"], u["tier"])
     print("apply: %d decisions (%d remove)" % (len(dec), sum(v == "remove" for v in dec.values()))); step_render(a, dec)
 
-STEPS = {"analyse": step_analyse, "scribe": step_scribe, "score": step_score, "render": step_render, "review": step_review, "learn": step_learn, "apply": step_apply}
+def step_blind(a):
+    """Blind test of the scorer. Without --decisions: sample --n islands the reviewer has never seen (--exclude prior decisions),
+    build a page that shows ONLY the audio and the words (no p, no tier, no evidence) and seal the scorer's calls in work/blind_key.json.
+    With --decisions: grade the reviewer's calls against the sealed key."""
+    import random
+    key_path = a.work + "/blind_key.json"
+    if a.decisions:
+        key = J(key_path); dec = read_decisions(a.decisions); agree = conf = confagree = 0
+        print("blind test: %d sealed calls, %d reviewer decisions" % (len(key), len(dec)))
+        print("   %-9s %-6s %-6s %-5s %s" % ("where", "you", "algo", "p", "evidence"))
+        for k in sorted(key, key=lambda k: key[k]["t0"]):
+            r = key[k]; you = dec.get(r["start"]); algo = r["tier"]
+            if you is None: continue
+            ok = you == algo; agree += ok
+            if algo != "review": conf += 1; confagree += ok
+            print("   %-9s %-6s %-6s %.2f  %s  %s" % (r["start"], you, algo, r["p"], "ok " if ok else "XX " if algo != "review" else "-- ", r["evidence"][:90]))
+        n = sum(1 for k in key if key[k]["start"] in dec)
+        print("blind test: %d/%d agree overall; on the %d confident calls (not review tier) %d/%d agree" % (agree, n, conf, confagree, conf))
+        return
+    rows = [r for r in J(a.work + "/scored.json")["rows"] if "p" in r]   # overlap islands only (the rest were never scored)
+    seen = set(read_decisions(a.exclude)) if a.exclude else set()
+    pool = [r for r in rows if mmss(r["t0"]) not in seen]
+    strata = [("remove", lambda r: r["p"] >= 0.95, 0.4), ("remove", lambda r: a.remove_p <= r["p"] < 0.95, 0.2), ("review", lambda r: r["tier"] == "review", 0.2), ("keep", lambda r: r["tier"] == "keep", 0.2)]
+    rng = random.Random(a.seed); pick = []
+    for _, f, frac in strata:
+        c = [r for r in pool if f(r) and r not in pick]; rng.shuffle(c); pick += c[:max(1, round(a.n * frac))]
+    pick = sorted(pick[:a.n], key=lambda r: r["t0"])
+    d = a.work + "/blind"; os.makedirs(d + "/clips", exist_ok=True); cards = []; key = {}
+    for i, r in enumerate(pick):
+        rid = "bt%02d" % i; t0 = max(0, r["t0"] - 1); dur = r["dur"] + 2
+        ff("-ss", "%.3f" % t0, "-t", "%.3f" % dur, "-i", a.target, "-ac", "1", "-b:a", "96k", "%s/clips/%s_target.mp3" % (d, rid))
+        key[rid] = dict(start=mmss(r["t0"]), t0=r["t0"], p=r["p"], tier=r["tier"], evidence=r["evidence"], centroid=r["centroid"], tilt=r["tilt"], rel=r["rel"], words=r["words"])
+        cards.append('<tr id="{rid}"><td class="t">{t0}–{t1}<br><span class="m">{dur:.2f} s</span></td>'
+                     '<td><audio controls preload="none" src="clips/{rid}_target.mp3"></audio><div class="w">heard: {rw}</div></td>'
+                     '<td><div class="w">{lw}</div></td><td class="dec"><label><input type="radio" name="{rid}" value="remove"> remove</label>'
+                     '<label><input type="radio" name="{rid}" value="keep"> keep</label></td></tr>'.format(
+                         rid=rid, t0=mmss(r["t0"]), t1=mmss(r["t1"]), dur=r["dur"], rw=html.escape(r["words"] or "—"), lw=html.escape(r["ref_words"] or "—")))
+    page = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "review_template.html"), encoding="utf-8").read()
+    page = re.sub(r"<h1>.*?</h1>\s*<p class=\"sub\">.*?</p>\s*<div class=\"stats\">.*?</div>\s*", (
+        "<h1>@TARGET@ blind test — %d segments</h1><p class=\"sub\">Same format as the review page, but the scorer's opinion is hidden: each row is "
+        "@TARGET@'s track alone (1 s of context each side) plus what ElevenLabs heard and what @REF@ said just before. Mark every row, Copy decisions, paste back — "
+        "the sealed predictions are then graded against yours.</p>" % len(pick)), page, count=1, flags=re.S)
+    page = page.replace("<th>Evidence</th>", "").replace("overlap-review-v1", "overlap-blind-v1")
+    page = re.sub(r"<p class=\"m\">Full scored table.*?</p>", "", page, flags=re.S)
+    for k, v in {"@ROWS@": "\n".join(cards), "@TARGET@": a.target_name, "@REF@": a.ref_name}.items(): page = page.replace(k, str(v))
+    open(d + "/index.html", "w", encoding="utf-8", newline="\n").write(page); dump(key, key_path)
+    from collections import Counter
+    print("blind: %d segments -> %s/index.html ; sealed key (tiers %s) -> %s" % (len(pick), d, dict(Counter(k["tier"] for k in key.values())), key_path))
+
+STEPS = {"analyse": step_analyse, "scribe": step_scribe, "score": step_score, "render": step_render, "review": step_review, "learn": step_learn, "apply": step_apply, "blind": step_blind}
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("steps", nargs="*", default=["analyse", "scribe", "score", "render", "review"], choices=list(STEPS))
     ap.add_argument("--target", required=True); ap.add_argument("--reference", required=True); ap.add_argument("--work", required=True)
     ap.add_argument("--key"); ap.add_argument("--names", default="Target,Reference"); ap.add_argument("--out"); ap.add_argument("--decisions")
+    ap.add_argument("--n", type=int, default=10); ap.add_argument("--seed", type=int, default=1); ap.add_argument("--exclude")
     ap.add_argument("--remove-p", type=float, default=0.85); ap.add_argument("--keep-p", type=float, default=0.25); ap.add_argument("--no-learned", action="store_true")
     a = ap.parse_args(); a.target_name, a.ref_name = (a.names.split(",") + ["Reference"])[:2]; os.makedirs(a.work, exist_ok=True)
     for s in a.steps: STEPS[s](a)
