@@ -34,12 +34,33 @@
 </style>
 <div class="wrap">
 <h1>Richard / Liron / Adam — before / after Auphonic</h1>
-<p class="sub">Three speaker tracks from the Descript project <em>DD CAIS - Richard</em>, one 30-second
+<p class="sub">Four sections from the Descript project <em>DD CAIS - Richard</em>, one 30-second
 section each: the noisiest speech-bearing window of every track, then the same 30 s with the excess
 sound cleaned by Auphonic Speech Isolation. The voice is preserved, not resynthesised.</p>
 
   <section class="card">
-    <h2>Richard â€” Riverside track (hip filter)</h2>
+    <h2>Richard — the block from your screenshot (32:12–32:42)</h2>
+    <p class="meta">source <code>richard-liron-riverside-audio-hipfilter.wav</code> &middot; position <code>32:12</code> &middot; 30 s each side &middot; level-matched</p>
+    <p class="why">The exact stretch you flagged in Descript: Richard finishes a phrase around 32:17, then the gate opens on small artifact blips (32:20–32:22) before he comes back in at 32:29. This is the pause you can hear the room in.</p>
+    <div class="pair">
+      <div class="side">
+        <h3>Before <span class="tag raw">original</span></h3>
+        <audio controls preload="metadata" src="richard32_before.mp3"></audio>
+        <dl><dt>excess sound in pauses</dt><dd>-50.7 dB</dd>
+            <dt>speech level</dt><dd>-11.6 dB</dd></dl>
+      </div>
+      <div class="side">
+        <h3>After <span class="tag clean">Auphonic</span></h3>
+        <audio controls preload="metadata" src="richard32_after.mp3"></audio>
+        <dl><dt>excess sound in pauses</dt><dd>-49.7 dB</dd>
+            <dt>speech level</dt><dd>-11.6 dB</dd></dl>
+      </div>
+    </div>
+    <p class="delta">Essentially unchanged (-1.0 dB) &mdash; this track was already cleaned before it reached Descript, so there was little left to remove. The voice is untouched.</p>
+  </section>
+
+  <section class="card">
+    <h2>Richard — Riverside track (hip filter)</h2>
     <p class="meta">source <code>richard-liron-riverside-audio-hipfilter.wav</code> &middot; position <code>50:15</code> &middot; 30 s each side &middot; level-matched</p>
     <p class="why">Worst 'excess sound' window in Richard's raw hip-filter track: 11.8 s of the 30 s is pause with room tone/hiss at about -38 dB leaking through the gate.</p>
     <div class="pair">
@@ -53,14 +74,14 @@ sound cleaned by Auphonic Speech Isolation. The voice is preserved, not resynthe
         <h3>After <span class="tag clean">Auphonic</span></h3>
         <audio controls preload="metadata" src="richard_after.mp3"></audio>
         <dl><dt>excess sound in pauses</dt><dd>-52.6 dB</dd>
-            <dt>speech level</dt><dd>-12.7 dB</dd></dl>
+            <dt>speech level</dt><dd>-11.4 dB</dd></dl>
       </div>
     </div>
     <p class="delta">Excess sound in the pauses dropped <strong>14.6 dB</strong>.</p>
   </section>
 
   <section class="card">
-    <h2>Liron â€” Riverside track (already Auphonic + auto-EQ in Descript)</h2>
+    <h2>Liron — Riverside track (already Auphonic + auto-EQ in Descript)</h2>
     <p class="meta">source <code>liron-richard-auphonic-autoeq-stretched260ms.wav</code> &middot; position <code>59:55</code> &middot; 30 s each side &middot; level-matched</p>
     <p class="why">Liron's source file has already been through Auphonic + auto-EQ (see file name). This is the window with the most residual pause sound left; expect little change.</p>
     <div class="pair">
@@ -74,14 +95,14 @@ sound cleaned by Auphonic Speech Isolation. The voice is preserved, not resynthe
         <h3>After <span class="tag clean">Auphonic</span></h3>
         <audio controls preload="metadata" src="liron_after.mp3"></audio>
         <dl><dt>excess sound in pauses</dt><dd>-37.6 dB</dd>
-            <dt>speech level</dt><dd>-12.4 dB</dd></dl>
+            <dt>speech level</dt><dd>-11.3 dB</dd></dl>
       </div>
     </div>
     <p class="delta">Excess sound in the pauses dropped <strong>0.6 dB</strong>.</p>
   </section>
 
   <section class="card">
-    <h2>Adam â€” Sony mic track (auto-EQ)</h2>
+    <h2>Adam — Sony mic track (auto-EQ)</h2>
     <p class="meta">source <code>left-adam-sony-audio-autoeq.wav</code> &middot; position <code>28:25</code> &middot; 30 s each side &middot; level-matched</p>
     <p class="why">Adam's Sony-mic file is also an already-processed (auto-EQ) track - no raw version exists in this project. Window with the most residual pause sound; expect little change.</p>
     <div class="pair">
@@ -95,7 +116,7 @@ sound cleaned by Auphonic Speech Isolation. The voice is preserved, not resynthe
         <h3>After <span class="tag clean">Auphonic</span></h3>
         <audio controls preload="metadata" src="adam_after.mp3"></audio>
         <dl><dt>excess sound in pauses</dt><dd>-42.6 dB</dd>
-            <dt>speech level</dt><dd>-11.9 dB</dd></dl>
+            <dt>speech level</dt><dd>-10.8 dB</dd></dl>
       </div>
     </div>
     <p class="delta">Essentially unchanged (-0.1 dB) &mdash; this track was already cleaned before it reached Descript, so there was little left to remove. The voice is untouched.</p>
