@@ -35,7 +35,7 @@ pre{background:var(--card);border:1px solid var(--line);border-radius:8px;paddin
 <p class="m">Full scored table for all 1346 overlap segments: <a href="../overlaps.csv">overlaps.csv</a>. Scorer: <a href="../score.py">score.py</a>; detector/renderer: <a href="../debleed.py">debleed.py</a>.</p>
 </div>
 <script>
-const K="overlap-review-v1";let st={};try{st=JSON.parse(localStorage.getItem(K)||"{}")}catch(e){}
+const K="overlap-review-3a092646";let st={};try{st=JSON.parse(localStorage.getItem(K)||"{}")}catch(e){}
 document.querySelectorAll("input[type=radio]").forEach(i=>{if(st[i.name]===i.value)i.checked=true;i.addEventListener("change",()=>{st[i.name]=i.value;try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}upd()})});
 function upd(){const rows=[...document.querySelectorAll("tbody tr")];const lines=rows.map(r=>{const v=st[r.id];const t=r.querySelector("td.t").childNodes[0].textContent;return v?(t+" "+v):null}).filter(Boolean);document.getElementById("out").textContent=lines.join("\n");document.getElementById("cnt").textContent=lines.length+" / "+rows.length+" decided"}
 document.getElementById("copy").onclick=()=>{navigator.clipboard.writeText(document.getElementById("out").textContent)};

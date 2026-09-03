@@ -10,7 +10,7 @@ Whole-track bleed-artifact removal with a human review tier.  Steps (each cached
   learn     --decisions FILE: distil the reviewer's calls into rules, re-tier the undecided  -> learned.json
   apply     --decisions FILE (+ learned.json if present)                              -> <target>_final.wav
 """
-import argparse, csv, difflib, glob, html, json, math, os, re, subprocess, sys
+import argparse, csv, difflib, glob, hashlib, html, json, math, os, re, subprocess, sys
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from debleed import decode, envelope, analyse, classify, render, mmss
@@ -160,6 +160,7 @@ def step_review(a):
     page = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "review_template.html"), encoding="utf-8").read()
     for k, v in {"@N_REVIEW@": len(rv), "@N@": N, "@N_REMOVE@": C["remove"], "@S_REMOVE@": tot("remove"), "@N_KEEP@": C["keep"], "@S_KEEP@": tot("keep"),
                  "@S_REVIEW@": tot("review"), "@ROWS@": "\n".join(cards), "@TARGET@": a.target_name, "@REF@": a.ref_name}.items(): page = page.replace(k, str(v))
+    page = page.replace('K="overlap-review-v1"', 'K="overlap-review-%s"' % hashlib.md5("".join(mmss(r["t0"]) for r in rv).encode()).hexdigest()[:8])   # storage key per row set: a rebuilt page never inherits stale radio state
     open(d + "/index.html", "w", encoding="utf-8", newline="\n").write(page); print("review: %d segments -> %s/index.html" % (len(rv), d))
 
 def read_decisions(path):
