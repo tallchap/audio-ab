@@ -35,13 +35,33 @@
 <div class="wrap">
 <h1>Richard / Liron / Adam — before / after Auphonic</h1>
 <p class="sub">Four sections from the Descript project <em>DD CAIS - Richard</em>: first the exact block flagged in the
-sequence editor, then the noisiest speech-bearing 30-second window of each speaker's track, then the same 30 s with the excess
-sound cleaned by Auphonic Speech Isolation. The voice is preserved, not resynthesised.</p>
+sequence editor, then the noisiest speech-bearing 30-second window of each speaker's track. Richard's AFTER clips are the
+two-step chain (de-bleed against Liron's track, then Auphonic Speech Isolation); Liron's and Adam's are Auphonic only.
+The voice is preserved, not resynthesised.</p>
+<section class="card">
+<h2>Why Auphonic alone was not enough, and what the de-bleed step does</h2>
+<p class="why">The artifacts in Richard's pauses are not noise — they are <em>Liron's voice</em>, coming out of Richard's
+speakers into Richard's mic, 150–450 ms late (network round-trip, and it jitters). Riverside's noise gate opens on the louder
+syllables and you get short speech-shaped blips. Speech Isolation is built to keep speech, so it keeps them.</p>
+<p class="why"><code>debleed.py TARGET REFERENCE OUT</code> finds them programmatically across the whole track, no ear involved.
+It splits Richard's gated track into ungated "islands", and for every island checks whether Liron is talking just before it and
+whether its waveform cross-correlates with Liron's track over the delay range. An island is removed when it is short and quiet
+while Liron talks (gate chatter), when its waveform matches Liron's (echo), when it stays 10&nbsp;dB+ under Richard's speech level
+for as long as Liron talks (gate stuck open), or — your rule — when it sits within 1&nbsp;s of a confirmed artifact cluster while
+Liron is still talking and is not clearly Richard's own sustained speech. Removed ranges are muted with 10&nbsp;ms fades; everything
+else is bit-identical.</p>
+<p class="why">Whole-track result on <code>richard-liron-riverside-audio-hipfilter.wav</code> (2h00m): 2,335 islands, <strong>1,212 removed,
+482&nbsp;s total</strong> — 1,055 gate chatter, 83 quiet-under-Liron, 25 stuck-open stretches (three of them ~59&nbsp;s long, at 41:43, 49:28
+and 93:08), 44 next-to-cluster, 5 by waveform match. 26 of the removed islands peak above −16&nbsp;dBFS and are the only ones that
+could plausibly be a real "yeah" from Richard under Liron's speech; they are listed with timestamps in
+<a href="richard_removed.csv">richard_removed.csv</a> (every removed range, with the reason) so any can be exempted.
+Script: <a href="debleed.py">debleed.py</a>.</p>
+</section>
 
   <section class="card">
     <h2>Richard — the block from your screenshot (32:12–32:42)</h2>
     <p class="meta">source <code>richard-liron-riverside-audio-hipfilter.wav</code> &middot; position <code>32:12</code> &middot; 30 s each side &middot; level-matched</p>
-    <p class="why">The exact stretch you flagged in Descript: Richard finishes a phrase around 32:17, then the gate opens on small artifact blips (32:20–32:22) before he comes back in at 32:29. This is the pause you can hear the room in.</p>
+    <p class="why">The exact stretch you flagged: Richard finishes a phrase at 32:17, then while Liron asks his question (32:19–32:23) Richard's gate opens on Liron's voice coming out of Richard's speakers — the −27 and −19 dB blips at 32:19–32:20 plus three quieter gate flutters. Auphonic alone left all of them in (they are speech-shaped, so Speech Isolation keeps them). The AFTER here is the new two-step chain: de-bleed first, then Auphonic.</p>
     <div class="pair">
       <div class="side">
         <h3>Before <span class="tag raw">original</span></h3>
@@ -52,17 +72,17 @@ sound cleaned by Auphonic Speech Isolation. The voice is preserved, not resynthe
       <div class="side">
         <h3>After <span class="tag clean">Auphonic</span></h3>
         <audio controls preload="metadata" src="richard32_after.mp3"></audio>
-        <dl><dt>excess sound in pauses</dt><dd>-49.7 dB</dd>
+        <dl><dt>excess sound in pauses</dt><dd>-51.3 dB</dd>
             <dt>speech level</dt><dd>-11.6 dB</dd></dl>
       </div>
     </div>
-    <p class="delta"><strong>Not fixed.</strong> The two artifact blips in the pause (≈32:19 and 32:20, −27 and −19 dB) survive Auphonic — the second even comes up ~3 dB from the leveler. They are speech-shaped (the Riverside gate opening on bleed/echo of the other speaker), and Speech Isolation keeps anything that looks like speech. Pause level -50.7 → -49.7 dB overall; the voice itself is unchanged.</p>
+    <p class="delta"><strong>Fixed.</strong> Every blip in the pause is gone: 32:19–32:23 is now true silence (−101 dB) where the original had −27 and −19 dB bursts of Liron's voice plus three gate flutters at −43 to −46 dB. The only pause sound left is Richard's own breath tail right after his phrase (32:17–32:18.5, about −50 dB), which is his room, not an artifact. His speech is unchanged.</p>
   </section>
 
   <section class="card">
     <h2>Richard — Riverside track (hip filter)</h2>
     <p class="meta">source <code>richard-liron-riverside-audio-hipfilter.wav</code> &middot; position <code>50:15</code> &middot; 30 s each side &middot; level-matched</p>
-    <p class="why">Worst 'excess sound' window in Richard's raw hip-filter track: 11.8 s of the 30 s is pause with room tone/hiss at about -38 dB leaking through the gate.</p>
+    <p class="why">Richard's worst 30-second window by the pause metric. It turns out to be the same fault as 32:12 in slow motion: Richard's gate stayed open for 59 s (49:28–50:27) on steady bleed/room while Liron talked. Auphonic on its own already cleaned most of it (−38 → −53 dB); the de-bleed step removes the whole stretch outright.</p>
     <div class="pair">
       <div class="side">
         <h3>Before <span class="tag raw">original</span></h3>
@@ -77,7 +97,7 @@ sound cleaned by Auphonic Speech Isolation. The voice is preserved, not resynthe
             <dt>speech level</dt><dd>-11.4 dB</dd></dl>
       </div>
     </div>
-    <p class="delta">Excess sound in the pauses dropped <strong>14.6 dB</strong>.</p>
+    <p class="delta"><strong>Fixed either way.</strong> Pause level −38.0 → −52.6 dB — identical to Auphonic alone here, because Auphonic's own gate already silenced the 59-second stuck-open stretch (it is steady noise, not speech-shaped). The de-bleed step matters for the 32:12 kind of blip, which Auphonic keeps.</p>
   </section>
 
   <section class="card">
@@ -122,7 +142,7 @@ sound cleaned by Auphonic Speech Isolation. The voice is preserved, not resynthe
     <p class="delta">Essentially unchanged (-0.1 dB) &mdash; this track was already cleaned before it reached Descript, so there was little left to remove. The voice is untouched.</p>
   </section>
 <footer>
-<strong>What was applied:</strong> Auphonic Speech Isolation
+<strong>What was applied:</strong> Richard: <code>debleed.py</code> (above), then Auphonic. All: Auphonic Speech Isolation
 (<code>denoisemethod=speech_isolation</code>, amount 100), adaptive leveler,
 loudness normalised to −16 LUFS with −1.5 dBTP ceiling, 48 kHz WAV.
 Nothing else was changed — no EQ, no gate, no generative resynthesis.<br>
