@@ -86,8 +86,10 @@ def step_score(a):
         return sum(1 for w in rw if w in lw or any(difflib.SequenceMatcher(None, w, x).ratio() >= 0.8 for x in lw)) / len(rw) if rw else 0.0
     for r in rows:
         if r["ract"] < 0.2:   # reference not active: not scored, but an island the hard rules flagged must not fall through the cracks
-            if r["why"]: r.update(rel=round(r["peak"] - s90, 1), words="", ref_words="", lex=0.0, score=None, p=0.9 if r["peak"] <= -30 else 0.5, evidence="hard rule: %s; reference quiet so not scored" % r["why"])
-            r["tier"] = "n/a" if not r["why"] else "remove" if r["peak"] <= -30 else "review"; continue
+            if r["why"]:   # Ori 2026-09-03: quiet, whispery or sub-100 ms ones are bleed (32:19, 85:30); a loud voiced 0.45 s one was his (113:46)
+                cut = r["peak"] <= -20 or r["dur"] <= 0.1 or r["centroid"] >= 1500 or r["tilt"] >= -5
+                r.update(rel=round(r["peak"] - s90, 1), words="", ref_words="", lex=0.0, score=None, p=0.9 if cut else 0.5, evidence="hard rule: %s; reference quiet so not scored" % r["why"])
+            r["tier"] = "n/a" if not r["why"] else "remove" if cut else "review"; continue
         rel = r["peak"] - s90; rw = seg.get(r.get("id", ""), None); lw = lwords(r["t0"], r["t1"]); m = match(rw, lw) if rw else 0.0
         ev = []; s = 0
         if r["ncc"] >= 0.15: s += 3; ev.append("waveform=%s ncc %.2f" % (a.ref_name, r["ncc"]))
@@ -111,11 +113,12 @@ def step_score(a):
         if r["nbr_whisper"] >= 2 and not real: s += 2; ev.append("inside a bleed stretch (%d whispery islands within 1.5 s)" % r["nbr_whisper"])
         if rw and m < 0.3:
             if all(w in BC for w in rw):
-                if rel <= -6: s += 1.5; ev.append("quiet backchannel under %s: %s" % (a.ref_name, " ".join(rw)))
+                if rel <= -8: s += 3; ev.append("quiet backchannel under %s: %s" % (a.ref_name, " ".join(rw)))   # mmhmm/hmm ≥8 dB under the reference: Ori removes every one (5/5)
+                elif rel <= -6: s += 1.5; ev.append("quiet backchannel under %s: %s" % (a.ref_name, " ".join(rw)))   # at -6 he kept one (117:33)
                 else: s -= 3; ev.append("backchannel at speech level: %s" % " ".join(rw))
             elif real: s -= 4; ev.append("real speech: %s" % " ".join(rw))
             elif rel > -6 and not whisper: s -= 3; ev.append("words at speech level: %s" % " ".join(rw))
-            elif rel > -3 and whisper: s -= 2.5; ev.append("loud words despite whispery timbre: %s" % " ".join(rw))
+            elif rel > -3 and whisper: s -= 4; ev.append("loud words despite whispery timbre: %s" % " ".join(rw))   # "how's this" mic checks are Richard's (Ori keeps, 2/2)
             elif rel <= -10 and len(rw) <= 2: s += 1; ev.append("quiet mutter under %s: %s" % (a.ref_name, " ".join(rw)))
             else: s -= 1; ev.append("words: %s" % " ".join(rw))
         if r["own_dist"] <= 0.3: s -= 2; ev.append("adjacent to own speech")
